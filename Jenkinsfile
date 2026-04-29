@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
         KUBECONFIG_CREDENTIALS = credentials('kubeconfig')
         IMAGE_FRONTEND = "sloth69/journal-frontend"
         IMAGE_BACKEND = "sloth69/journal-backend"
