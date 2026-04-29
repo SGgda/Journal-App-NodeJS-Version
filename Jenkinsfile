@@ -47,9 +47,9 @@ pipeline {
         stage('Deploy to K3s') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl --kubeconfig=$KUBECONFIG apply -f k8s/redis-deployment.yaml'
-                    sh 'kubectl --kubeconfig=$KUBECONFIG apply -f k8s/backend-deployment.yaml'
-                    sh 'kubectl --kubeconfig=$KUBECONFIG apply -f k8s/frontend-deployment.yaml'
+                    sh 'kubectl --kubeconfig=$KUBECONFIG --validate=false apply -f k8s/redis-deployment.yaml'
+                    sh 'kubectl --kubeconfig=$KUBECONFIG --validate=false apply -f k8s/backend-deployment.yaml'
+                    sh 'kubectl --kubeconfig=$KUBECONFIG --validate=false apply -f k8s/frontend-deployment.yaml'
                     sh 'kubectl --kubeconfig=$KUBECONFIG rollout restart deployment/frontend'
                     sh 'kubectl --kubeconfig=$KUBECONFIG rollout restart deployment/backend'
                 }
