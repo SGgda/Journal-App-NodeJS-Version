@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-        KUBECONFIG_CREDENTIALS = credentials('kubeconfig')
         IMAGE_FRONTEND = "sloth69/journal-frontend"
         IMAGE_BACKEND = "sloth69/journal-backend"
         TAG = "${env.BUILD_NUMBER}"
@@ -19,7 +18,7 @@ pipeline {
         stage('Build Frontend Image') {
             steps {
                 dir('frontend') {
-                    sh 'docker build -t $IMAGE_FRONTEND:$TAG .'
+                    sh 'docker build --platform linux/amd64 --build-arg VITE_API_URL=http://43.205.198.97:30005/api -t $IMAGE_FRONTEND:$TAG .'
                     sh 'docker tag $IMAGE_FRONTEND:$TAG $IMAGE_FRONTEND:latest'
                 }
             }
@@ -28,7 +27,7 @@ pipeline {
         stage('Build Backend Image') {
             steps {
                 dir('backend') {
-                    sh 'docker build -t $IMAGE_BACKEND:$TAG .'
+                    sh 'docker build --platform linux/amd64 -t $IMAGE_BACKEND:$TAG .'
                     sh 'docker tag $IMAGE_BACKEND:$TAG $IMAGE_BACKEND:latest'
                 }
             }
@@ -50,15 +49,13 @@ pipeline {
                     sh 'kubectl --kubeconfig=$KUBECONFIG apply -f k8s/redis-deployment.yaml'
                     sh 'kubectl --kubeconfig=$KUBECONFIG apply -f k8s/backend-deployment.yaml'
                     sh 'kubectl --kubeconfig=$KUBECONFIG apply -f k8s/frontend-deployment.yaml'
-                    
-                    // Force rollout to pick up latest image
                     sh 'kubectl --kubeconfig=$KUBECONFIG rollout restart deployment/frontend'
                     sh 'kubectl --kubeconfig=$KUBECONFIG rollout restart deployment/backend'
                 }
             }
         }
     }
-    
+
     post {
         always {
             sh 'docker logout'
