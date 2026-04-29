@@ -6,6 +6,7 @@ pipeline {
         IMAGE_FRONTEND = "sloth69/journal-frontend"
         IMAGE_BACKEND = "sloth69/journal-backend"
         TAG = "${env.BUILD_NUMBER}"
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
     }
 
     stages {
