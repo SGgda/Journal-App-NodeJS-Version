@@ -42,6 +42,14 @@ resource "aws_security_group" "journal_app_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # K3s API server (for Jenkins remote kubectl access)
+  ingress {
+    from_port   = 6443
+    to_port     = 6443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Egress - allow all outgoing traffic
   egress {
     from_port   = 0
