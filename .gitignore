@@ -1,0 +1,16 @@
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+.env
+*.log
+
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+
+*.pem
+
+dist/
+build/
+coverage/.DS_Store
