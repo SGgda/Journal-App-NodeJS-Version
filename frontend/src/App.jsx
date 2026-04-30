@@ -76,7 +76,7 @@ function App() {
         <div className="header-content">
           <div className="logo-section">
             <BookOpen className="logo-icon" size={32} />
-            <h1>My Journal</h1>
+            <h1>My Journals</h1>
           </div>
           <button className="primary-btn" onClick={() => {
             setIsFormOpen(!isFormOpen)
